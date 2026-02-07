@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String     @map("password_hash")
+  name      String?
+  role      Role       @default(USER)
+  favoritos Guardado[]
+
+  @@map("usuarios")
+}
+
+model Autor {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  image    String?
+  escritos Escrito[]
+
+  @@map("autores")
+}
+
+model Escrito {
+  id             String      @id @default(cuid())
+  titulo_escrito String
+  resumen        String
+  autorId        Int
+  contenido      Json
+  link_documento String?
+  link_imagen    String?
+  status         WriteStatus @default(BORRADOR)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  numero_guardados Int @default(0) @map("guardado")
+  views Int   @default(0)
+  autor Autor @relation(fields: [autorId], references: [id])
+  tags  Tag[] @relation("EscritoToTag")
+
+  // Relación con los usuarios que han guardado este escrito
+  usuariosQueGuardaron Guardado[]
+
+  @@map("escritos")
+}
+
+model Guardado {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  escritoId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  escrito Escrito @relation(fields: [escritoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, escritoId])
+  @@map("usuarios_guardados")
+}
+
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  color    String
+  escritos Escrito[] @relation("EscritoToTag")
+
+  @@map("etiquetas")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum WriteStatus {
+  PUBLICADO
+  BORRADOR
+}
