@@ -4,6 +4,8 @@ import { CreateForm } from "./create_form";
 import { auth } from "@/app/actions/auth";
 import { redirect } from "next/navigation";
 
+export const dynamic = 'force-dynamic';
+
 export default async function CreateEscritoPage() {
   const autores = await prisma.autor.findMany();
   // 1. Debes obtener las etiquetas aquí

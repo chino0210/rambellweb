@@ -1,7 +1,5 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
+# --- DEPENDENCIAS ---
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -10,63 +8,42 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
-/.next/
+# --- NEXT.JS Y COMPILACIÓN ---
+.next/
 /out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
+/build/
+/dist/
 *.tsbuildinfo
 next-env.d.ts
+.eslintcache
 
-/src/generated/prisma
-
-# --- PRISMA ESPECÍFICO ---
-# Ignorar la base de datos local (solo si usas SQLite)
+# --- PRISMA ---
+# Ignorar bases de datos locales (SQLite)
 /prisma/*.db
 /prisma/*.db-journal
-
-# Ignorar el motor de Prisma generado (si lo tienes en una ruta custom)
+# Ignorar el cliente si lo generas en una ruta custom (como tenías en tu código)
+/src/generated/prisma
 /prisma/generated-client
 
-# --- SEGURIDAD Y ENTORNO ---
-# Asegúrate de ignorar TODOS los archivos de entorno
+# --- SEGURIDAD Y ENTORNO (CRÍTICO) ---
+# Bloquea todos los archivos .env para evitar filtraciones
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-# Pero podrías querer subir un ejemplo (opcional)
+# Permite subir un archivo de ejemplo sin datos reales
 !.env.example
 
-# --- NEXT.JS / HERRAMIENTAS ---
-# Archivos de caché de telemetría y linting
-.next
-.eslintcache
-*.tsbuildinfo
-next-env.d.ts
+# --- TESTING Y LOGS ---
+/coverage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
-# --- SISTEMA ---
-Thumbs.db
+# --- SISTEMA Y HERRAMIENTAS ---
 .DS_Store
+Thumbs.db
+*.pem
+.vercel
